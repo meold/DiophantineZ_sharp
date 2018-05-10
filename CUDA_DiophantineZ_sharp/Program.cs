@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,15 +23,15 @@ namespace DiophantineZ_sharp
             List<int[]> retlist = new List<int[]>();
             foreach (string line in str_input)
             {
-                    string[] arline = line.Split();
-                    int[] intline = new int[arline.Length];
-                    for (int i = 0; i < arline.Length; i++)
-                    {
-                    if (arline[i]!="")
+                string[] arline = line.Split();
+                int[] intline = new int[arline.Length];
+                for (int i = 0; i < arline.Length; i++)
+                {
+                    if (arline[i] != "")
                         intline[i] = int.Parse(arline[i]);
-                    }
-                    retlist.Add(intline);
-                
+                }
+                retlist.Add(intline);
+
             }
             return retlist;
         }
@@ -65,7 +64,7 @@ namespace DiophantineZ_sharp
 
         public static int[] Substitute(int[] equation, List<int[]> pre_basis)  //substitute vectors of prebasis to given equation
         {
-            int [] result = new int[pre_basis.Count];  //for each prebasis vector
+            int[] result = new int[pre_basis.Count];  //for each prebasis vector
             for (int i = 0; i < pre_basis.Count; i++)
             {
                 int one_vector_result = 0;  //value of substitution of single prebasis vector
@@ -154,29 +153,21 @@ namespace DiophantineZ_sharp
         static void Main(string[] args)
         {
 
-            foreach (string filename in Directory.EnumerateFiles(@"C:\Users\dmitr\Documents\DiophantineZ\Input\")) //iterate through all files with inputs in directory
+            foreach (string filename in Directory.EnumerateFiles(@"C:\Users\dmitr\Documents\DiophantineZ\Input\"))  //iterate through all files with inputs in directory
             {
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-                string input_size = "";
                 List<int[]> red = Read_file(filename);
-                for (int i = 0; i < 10; i++)
-                {
-                    red = Read_file(filename);
-                    sw.Start();
-                    Solv(red);
-                    sw.Stop();
-                    input_size = red.Count.ToString() + "x" + red[0].Length.ToString();
-                }
-
-                Console.WriteLine(input_size);
+                sw.Start();
+                Solv(red);
+                sw.Stop();
+                string input_size = red.Count.ToString() + "x" + red[0].Length.ToString();
+                Console.WriteLine(input_size + " - " + (sw.ElapsedMilliseconds / 1000.0).ToString());
                 using (System.IO.StreamWriter file =
                     new System.IO.StreamWriter(new System.IO.FileStream("sharpZ.csv", FileMode.Append)))
                 {
-                    file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length).ToString(),
-                        (sw.ElapsedMilliseconds/10000.0).ToString("F4", CultureInfo.InvariantCulture));
+                    file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length - 1).ToString(), (sw.ElapsedMilliseconds).ToString());
                 }
             }
-
             //string project_root = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             //string file = project_root + "\\" + "generated.txt";
