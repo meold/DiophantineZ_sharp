@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -171,8 +172,8 @@ namespace DiophantineZ_sharp
                 using (System.IO.StreamWriter file =
                     new System.IO.StreamWriter(new System.IO.FileStream("sharpZ.csv", FileMode.Append)))
                 {
-                    file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length - 1).ToString(),
-                        (sw.ElapsedMilliseconds).ToString());
+                    file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length).ToString(),
+                        (sw.ElapsedMilliseconds/10000.0).ToString("F4", CultureInfo.InvariantCulture));
                 }
             }
 

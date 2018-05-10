@@ -1,14 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.15
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiophantineZ_sharp", "DiophantineZ_sharp\DiophantineZ_sharp.csproj", "{C911A357-E552-447C-85F4-7C8CDDDFA0BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generator", "Generator\Generator.csproj", "{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}"
 EndProject
-<<<<<<< Updated upstream
-=======
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cloning_systems_generator", "Cloning_systems_generator\Cloning_systems_generator.csproj", "{3BB5F031-8AD1-4E07-AF15-1B86F10749D9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CUDA_DiophantineZ_sharp", "CUDA_DiophantineZ_sharp\CUDA_DiophantineZ_sharp.csproj", "{DE3D0D7A-85FA-43D0-BBD7-262EDD788900}"
@@ -17,23 +15,28 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hybrid", "Hybrid\Hybrid\Hyb
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hybrid_CUDA", "Hybrid\Hybrid_CUDA\Hybrid_CUDA.vcxproj", "{935F7D17-2595-4124-92C3-FC9E4FB90D94}"
 EndProject
->>>>>>> Stashed changes
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
 		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Debug|x64.Build.0 = Debug|Any CPU
 		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Release|x64.ActiveCfg = Release|Any CPU
+		{C911A357-E552-447C-85F4-7C8CDDDFA0BE}.Release|x64.Build.0 = Release|Any CPU
 		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Debug|x64.Build.0 = Debug|Any CPU
 		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Release|Any CPU.Build.0 = Release|Any CPU
-<<<<<<< Updated upstream
-=======
 		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Release|x64.ActiveCfg = Release|Any CPU
 		{297CF9AE-0F0E-4778-A6AC-BBF1DC97DBA4}.Release|x64.Build.0 = Release|Any CPU
 		{3BB5F031-8AD1-4E07-AF15-1B86F10749D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -64,7 +67,6 @@ Global
 		{935F7D17-2595-4124-92C3-FC9E4FB90D94}.Release|Any CPU.ActiveCfg = Release|x64
 		{935F7D17-2595-4124-92C3-FC9E4FB90D94}.Release|x64.ActiveCfg = Release|x64
 		{935F7D17-2595-4124-92C3-FC9E4FB90D94}.Release|x64.Build.0 = Release|x64
->>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
