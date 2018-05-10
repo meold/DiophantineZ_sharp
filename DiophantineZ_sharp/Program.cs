@@ -152,22 +152,30 @@ namespace DiophantineZ_sharp
 
         static void Main(string[] args)
         {
-            
-                foreach (string filename in Directory.EnumerateFiles(@"C:\Users\dmitr\Documents\DiophantineZ\Input\"))  //iterate through all files with inputs in directory
+
+            foreach (string filename in Directory.EnumerateFiles(@"C:\Users\dmitr\Documents\DiophantineZ\Input\")) //iterate through all files with inputs in directory
+            {
+                System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+                string input_size = "";
+                List<int[]> red = Read_file(filename);
+                for (int i = 0; i < 10; i++)
                 {
-                    System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-                    List<int[]> red = Read_file(filename);
+                    red = Read_file(filename);
                     sw.Start();
                     Solv(red);
                     sw.Stop();
-                    string input_size = red.Count.ToString() + "x" + red[0].Length.ToString();
-                    Console.WriteLine(input_size+" - "+ (sw.ElapsedMilliseconds/1000.0).ToString());
-                    using (System.IO.StreamWriter file =
-                        new System.IO.StreamWriter(new System.IO.FileStream("sharpZ.csv", FileMode.Append)))
-                    {
-                    file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length-1).ToString(),(sw.ElapsedMilliseconds).ToString());
+                    input_size = red.Count.ToString() + "x" + red[0].Length.ToString();
+                }
+
+                Console.WriteLine(input_size);
+                using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter(new System.IO.FileStream("sharpZ.csv", FileMode.Append)))
+                {
+                    file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length - 1).ToString(),
+                        (sw.ElapsedMilliseconds).ToString());
                 }
             }
+
             //string project_root = Path.GetDirectoryName(Path.GetDirectoryName(System.IO.Directory.GetCurrentDirectory()));
             //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             //string file = project_root + "\\" + "generated.txt";
