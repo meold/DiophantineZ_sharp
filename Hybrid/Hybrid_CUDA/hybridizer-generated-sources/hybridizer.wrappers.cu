@@ -62,7 +62,7 @@ namespace Hybrid {
 struct Program ;
 } // Leaving namespace
 namespace Hybrid { 
-struct Program___c__DisplayClass0_0 ;
+struct Program___c__DisplayClass1_0 ;
 } // Leaving namespace
 namespace System { namespace Threading { namespace Tasks { 
 struct Parallel ;
@@ -74,6 +74,15 @@ struct ParallelLoopResult ;
 } } } // Leaving namespace
 // Intrinsic type Action`1 used
 #define __TYPE_DECL_hybridizer_action__int____
+namespace Hybrid { 
+struct Program___c__DisplayClass2_0 ;
+} // Leaving namespace
+namespace Hybrid { 
+struct Program___c__DisplayClass3_0 ;
+} // Leaving namespace
+namespace Hybrid { 
+struct Program___c__DisplayClass7_0 ;
+} // Leaving namespace
 #endif // TOTO
 #pragma endregion
 
@@ -148,7 +157,7 @@ extern "C" DLL_PUBLIC __hybridizer_properties __HybridizerGetProperties () {
 #pragma region Wrappers definitions
 
 
-extern "C" DLL_PUBLIC int run_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int N,  int* const a,  int* const b)
+extern "C" DLL_PUBLIC int Hybridx46Programx46Create_pre_basis_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const equation,  int** const pre_basis_main,  int N,  int* const a)
 {
 	CUresult cures ;                                                                                 
 	if (__hybridizer__gs_module.module_data == 0)                                                    
@@ -159,19 +168,140 @@ extern "C" DLL_PUBLIC int run_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y
 	                                                                                                 
 	CUfunction __hybridizer__cufunc ;                                                                
 	                                                                                                 
-	cures = cuModuleGetFunction (&__hybridizer__cufunc, __hybridizer__gs_module.module, "run") ;   
+	cures = cuModuleGetFunction (&__hybridizer__cufunc, __hybridizer__gs_module.module, "Hybridx46Programx46Create_pre_basis") ;   
 	if (cures != CUDA_SUCCESS) return (int)cures ;                                                   
 	                                                                                                 
 	hybridizer::runtime* __hybridizer_runtime = (hybridizer::runtime*) __hybridizer_init_basic_runtime(); 
 
 
 
-	void* __hybridizer_launch_config[5] = 
+	void* __hybridizer_launch_config[6] = 
 		{
 			(void*)&__hybridizer_runtime,
+			(void*)&equation,
+			(void*)&pre_basis_main,
 			(void*)&N,
 			(void*)&a,
-			(void*)&b,
+			(void*)0
+		} ;
+
+	shared += 16 ; if (shared > 48*1024) shared = 48*1024 ;                                                                                                
+	                                                                                                                                                       
+	cures = cuLaunchKernel (__hybridizer__cufunc, gridDim_x, gridDim_y, 1, blockDim_x, blockDim_y, blockDim_z, shared, 0, __hybridizer_launch_config, 0) ; 
+	if (cures != CUDA_SUCCESS) return (int)cures ; 
+	int cudaLaunchRes = (int)::cudaPeekAtLastError ();                                                                                                     
+	if (cudaLaunchRes != 0) return cudaLaunchRes;                                                                                                          
+	int __synchronizeRes = (int)::cudaDeviceSynchronize () ;                                                                                               
+	return __synchronizeRes ;                                                                                                                              
+
+}
+
+extern "C" DLL_PUBLIC int Hybridx46Programx46Substitute_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const equation,  int** const pre_basis,  int* const result,  int equationLength,  int pre_basisLength)
+{
+	CUresult cures ;                                                                                 
+	if (__hybridizer__gs_module.module_data == 0)                                                    
+	{                                                                                              
+		cures = cuModuleLoadData (&(__hybridizer__gs_module.module), __hybridizer_cubin_module_data) ; 
+		if (cures != CUDA_SUCCESS) return (int)cures ;                                                 
+	}                                                                                              
+	                                                                                                 
+	CUfunction __hybridizer__cufunc ;                                                                
+	                                                                                                 
+	cures = cuModuleGetFunction (&__hybridizer__cufunc, __hybridizer__gs_module.module, "Hybridx46Programx46Substitute") ;   
+	if (cures != CUDA_SUCCESS) return (int)cures ;                                                   
+	                                                                                                 
+	hybridizer::runtime* __hybridizer_runtime = (hybridizer::runtime*) __hybridizer_init_basic_runtime(); 
+
+
+
+	void* __hybridizer_launch_config[7] = 
+		{
+			(void*)&__hybridizer_runtime,
+			(void*)&equation,
+			(void*)&pre_basis,
+			(void*)&result,
+			(void*)&equationLength,
+			(void*)&pre_basisLength,
+			(void*)0
+		} ;
+
+	shared += 16 ; if (shared > 48*1024) shared = 48*1024 ;                                                                                                
+	                                                                                                                                                       
+	cures = cuLaunchKernel (__hybridizer__cufunc, gridDim_x, gridDim_y, 1, blockDim_x, blockDim_y, blockDim_z, shared, 0, __hybridizer_launch_config, 0) ; 
+	if (cures != CUDA_SUCCESS) return (int)cures ; 
+	int cudaLaunchRes = (int)::cudaPeekAtLastError ();                                                                                                     
+	if (cudaLaunchRes != 0) return cudaLaunchRes;                                                                                                          
+	int __synchronizeRes = (int)::cudaDeviceSynchronize () ;                                                                                               
+	return __synchronizeRes ;                                                                                                                              
+
+}
+
+extern "C" DLL_PUBLIC int Hybridx46Programx46Multiply_pre_basis_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int** const big_pre_basis,  int** const small_pre_basis,  int** const result,  int big_pre_basis0Length,  int small_pre_basisLength,  int small_pre_basis0Lenth)
+{
+	CUresult cures ;                                                                                 
+	if (__hybridizer__gs_module.module_data == 0)                                                    
+	{                                                                                              
+		cures = cuModuleLoadData (&(__hybridizer__gs_module.module), __hybridizer_cubin_module_data) ; 
+		if (cures != CUDA_SUCCESS) return (int)cures ;                                                 
+	}                                                                                              
+	                                                                                                 
+	CUfunction __hybridizer__cufunc ;                                                                
+	                                                                                                 
+	cures = cuModuleGetFunction (&__hybridizer__cufunc, __hybridizer__gs_module.module, "Hybridx46Programx46Multiply_pre_basis") ;   
+	if (cures != CUDA_SUCCESS) return (int)cures ;                                                   
+	                                                                                                 
+	hybridizer::runtime* __hybridizer_runtime = (hybridizer::runtime*) __hybridizer_init_basic_runtime(); 
+
+
+
+	void* __hybridizer_launch_config[8] = 
+		{
+			(void*)&__hybridizer_runtime,
+			(void*)&big_pre_basis,
+			(void*)&small_pre_basis,
+			(void*)&result,
+			(void*)&big_pre_basis0Length,
+			(void*)&small_pre_basisLength,
+			(void*)&small_pre_basis0Lenth,
+			(void*)0
+		} ;
+
+	shared += 16 ; if (shared > 48*1024) shared = 48*1024 ;                                                                                                
+	                                                                                                                                                       
+	cures = cuLaunchKernel (__hybridizer__cufunc, gridDim_x, gridDim_y, 1, blockDim_x, blockDim_y, blockDim_z, shared, 0, __hybridizer_launch_config, 0) ; 
+	if (cures != CUDA_SUCCESS) return (int)cures ; 
+	int cudaLaunchRes = (int)::cudaPeekAtLastError ();                                                                                                     
+	if (cudaLaunchRes != 0) return cudaLaunchRes;                                                                                                          
+	int __synchronizeRes = (int)::cudaDeviceSynchronize () ;                                                                                               
+	return __synchronizeRes ;                                                                                                                              
+
+}
+
+extern "C" DLL_PUBLIC int Hybridx46Programx46Simplify_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int** const ar,  int* const gcds,  int arLength,  int ar0Length)
+{
+	CUresult cures ;                                                                                 
+	if (__hybridizer__gs_module.module_data == 0)                                                    
+	{                                                                                              
+		cures = cuModuleLoadData (&(__hybridizer__gs_module.module), __hybridizer_cubin_module_data) ; 
+		if (cures != CUDA_SUCCESS) return (int)cures ;                                                 
+	}                                                                                              
+	                                                                                                 
+	CUfunction __hybridizer__cufunc ;                                                                
+	                                                                                                 
+	cures = cuModuleGetFunction (&__hybridizer__cufunc, __hybridizer__gs_module.module, "Hybridx46Programx46Simplify") ;   
+	if (cures != CUDA_SUCCESS) return (int)cures ;                                                   
+	                                                                                                 
+	hybridizer::runtime* __hybridizer_runtime = (hybridizer::runtime*) __hybridizer_init_basic_runtime(); 
+
+
+
+	void* __hybridizer_launch_config[6] = 
+		{
+			(void*)&__hybridizer_runtime,
+			(void*)&ar,
+			(void*)&gcds,
+			(void*)&arLength,
+			(void*)&ar0Length,
 			(void*)0
 		} ;
 
