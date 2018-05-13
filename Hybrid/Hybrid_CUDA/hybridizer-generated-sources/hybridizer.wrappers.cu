@@ -157,7 +157,7 @@ extern "C" DLL_PUBLIC __hybridizer_properties __HybridizerGetProperties () {
 #pragma region Wrappers definitions
 
 
-extern "C" DLL_PUBLIC int Hybridx46Programx46Create_pre_basis_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const equation,  int** const pre_basis_main,  int N,  int* const a)
+extern "C" DLL_PUBLIC int Hybridx46Programx46Create_pre_basis_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const equation,  int* const pre_basis_main,  int N)
 {
 	CUresult cures ;                                                                                 
 	if (__hybridizer__gs_module.module_data == 0)                                                    
@@ -175,13 +175,12 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Create_pre_basis_ExternCWrapper_CUD
 
 
 
-	void* __hybridizer_launch_config[6] = 
+	void* __hybridizer_launch_config[5] = 
 		{
 			(void*)&__hybridizer_runtime,
 			(void*)&equation,
 			(void*)&pre_basis_main,
 			(void*)&N,
-			(void*)&a,
 			(void*)0
 		} ;
 
@@ -196,7 +195,7 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Create_pre_basis_ExternCWrapper_CUD
 
 }
 
-extern "C" DLL_PUBLIC int Hybridx46Programx46Substitute_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const equation,  int** const pre_basis,  int* const result,  int equationLength,  int pre_basisLength)
+extern "C" DLL_PUBLIC int Hybridx46Programx46Substitute_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const equation,  int* const pre_basis,  int* const result,  int equationLength,  int pre_basisLengthAxis0)
 {
 	CUresult cures ;                                                                                 
 	if (__hybridizer__gs_module.module_data == 0)                                                    
@@ -221,7 +220,7 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Substitute_ExternCWrapper_CUDA( int
 			(void*)&pre_basis,
 			(void*)&result,
 			(void*)&equationLength,
-			(void*)&pre_basisLength,
+			(void*)&pre_basisLengthAxis0,
 			(void*)0
 		} ;
 
@@ -236,7 +235,7 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Substitute_ExternCWrapper_CUDA( int
 
 }
 
-extern "C" DLL_PUBLIC int Hybridx46Programx46Multiply_pre_basis_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int** const big_pre_basis,  int** const small_pre_basis,  int** const result,  int big_pre_basis0Length,  int small_pre_basisLength,  int small_pre_basis0Lenth)
+extern "C" DLL_PUBLIC int Hybridx46Programx46Multiply_pre_basis_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const big_pre_basis,  int* const small_pre_basis,  int* const result,  int big_pre_basisLengthAxis1,  int small_pre_basisLengthAxis0,  int small_pre_basisLengthAxis1)
 {
 	CUresult cures ;                                                                                 
 	if (__hybridizer__gs_module.module_data == 0)                                                    
@@ -260,9 +259,9 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Multiply_pre_basis_ExternCWrapper_C
 			(void*)&big_pre_basis,
 			(void*)&small_pre_basis,
 			(void*)&result,
-			(void*)&big_pre_basis0Length,
-			(void*)&small_pre_basisLength,
-			(void*)&small_pre_basis0Lenth,
+			(void*)&big_pre_basisLengthAxis1,
+			(void*)&small_pre_basisLengthAxis0,
+			(void*)&small_pre_basisLengthAxis1,
 			(void*)0
 		} ;
 
@@ -277,7 +276,7 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Multiply_pre_basis_ExternCWrapper_C
 
 }
 
-extern "C" DLL_PUBLIC int Hybridx46Programx46Simplify_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int** const ar,  int* const gcds,  int arLength,  int ar0Length)
+extern "C" DLL_PUBLIC int Hybridx46Programx46Simplify_ExternCWrapper_CUDA( int gridDim_x,  int gridDim_y,  int blockDim_x,  int blockDim_y,  int blockDim_z,  int shared,  int* const ar,  int* const gcds,  int arLengthAxis0,  int arLengthAxis1)
 {
 	CUresult cures ;                                                                                 
 	if (__hybridizer__gs_module.module_data == 0)                                                    
@@ -300,8 +299,8 @@ extern "C" DLL_PUBLIC int Hybridx46Programx46Simplify_ExternCWrapper_CUDA( int g
 			(void*)&__hybridizer_runtime,
 			(void*)&ar,
 			(void*)&gcds,
-			(void*)&arLength,
-			(void*)&ar0Length,
+			(void*)&arLengthAxis0,
+			(void*)&arLengthAxis1,
 			(void*)0
 		} ;
 
