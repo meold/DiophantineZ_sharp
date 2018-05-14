@@ -48,5 +48,13 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Input\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SourceSystems\input%28old%29.txt" />
+    <Content Include="SourceSystems\input25x41.txt" />
+    <Content Include="SourceSystems\input40x61%2810x30%29.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

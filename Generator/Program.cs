@@ -10,47 +10,49 @@ namespace Generator
 {
     class Program
     {
-        static string inputDirectory = @"C:\Users\dmitr\Documents\DiophantineZ\Input\";
-        static string Add_to_name_if_exists(string filename) //add number in brackets (1) or (2) ... if file already exists
-        {
-            if (File.Exists(inputDirectory + filename))
-            {
-                int t = 1;
-                while (File.Exists(inputDirectory + filename.Split('.').First() + "(" + t.ToString() + ")" + ".txt")) //add (1) if file exists, increase to (2) if filename(1).txt also exists
-                {
-                    t++;                   
-                }
-                filename = filename.Split('.').First() + "(" + t.ToString() + ")" + ".txt";
-            }
-            return filename;
-        }
         static void Main(string[] args)
         {
-            int max_variables = 150;
-            //for (int variables = 4; variables < max_variables; variables++)
-           // {
-            int variables = 300;
-                for (int equations = variables - 1; equations > variables / 6; equations-=5)
+
+            string sourceDirectory = @"C:\Users\dmitr\source\repos\DiophantineZ_sharp\Generator\SourceSystems\";
+            string sourceFile = "input40x61(10x30).txt";
+            string inputDirectory = @"C:\Users\dmitr\source\repos\DiophantineZ_sharp\Generator\Input\"; //Directory for generated systems
+
+            string[] original = File.ReadAllLines(sourceDirectory + sourceFile);
+
+
+            int min_variables_multiplier = 1;
+            int max_variables_multiplier = 100;
+
+            int min_equations = 1;
+            int max_equations = original.Length;
+
+            for (int equations = max_equations; equations >= min_equations; equations--)
+            {
+                for (int variables_multiplier = min_variables_multiplier;
+                    variables_multiplier <= max_variables_multiplier;
+                    variables_multiplier++)
                 {
-                    string inputName = "input" + equations.ToString() + "x" + variables.ToString() + ".txt";
-                    inputName = Add_to_name_if_exists(inputName);
+                    string inputName = "input" + equations.ToString() + "x" +
+                                       (original[0].Split().Length * variables_multiplier).ToString() + ".txt";
+
                     using (System.IO.StreamWriter file =
-                        new System.IO.StreamWriter(new System.IO.FileStream(inputDirectory+inputName, FileMode.Create)))
+                        new System.IO.StreamWriter(
+                            new System.IO.FileStream(inputDirectory + inputName, FileMode.Create)))
                     {
-                        Random rnd = new Random();
-                        for (int i = 0; i < equations; i++)
+                        for (int j = 0; j < equations; j++)
                         {
-                            int equation_sum = 0;
-                            for (int j = 0; j < variables; j++)
+                            for (int i = 0; i < variables_multiplier - 1; i++)
                             {
-                                file.Write(rnd.Next(-10, 10) + " ");
+                                file.Write(original[j] + " ");
                             }
-                            file.WriteLine();
+
+                            file.WriteLine(original[j]);
                         }
 
                     }
+
                 }
-            //}
+            }
         }
     }
 }
