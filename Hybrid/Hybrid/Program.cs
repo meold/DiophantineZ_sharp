@@ -157,7 +157,7 @@ namespace Hybrid
             cudaDeviceProp prop;
             cuda.GetDeviceProperties(out prop, 0);
             //if .SetDistrib is not used, the default is .SetDistrib(prop.multiProcessorCount * 16, 128)
-            HybRunner runner = HybRunner.Cuda("Hybrid_CUDA.dll");
+            HybRunner runner = HybRunner.Cuda("Hybrid_CUDA.dll").SetDistrib(prop.multiProcessorCount * 16, 256);
 
             // create a wrapper object to call GPU methods instead of C#
             dynamic wrapper = runner.Wrap(new Program());
@@ -182,25 +182,39 @@ namespace Hybrid
             for (int Li = 1; Li < input_arr.Count; Li++)  //iterate through other equations
             {
                 IntResidentArray substitution_result = new IntResidentArray(pre_basisLengthAxis0);
-
-                substitution_result.RefreshDevice();
+                
+                //substitution_result.RefreshDevice();
                 wrapper.Substitute(input_arr[Li], pre_basis_main, substitution_result, equationLength, pre_basisLengthAxis0);  //substitute vectors of prebasis to equation Li
 
                 IntResidentArray pre_basis_Y = new IntResidentArray((pre_basisLengthAxis0 - 1)*pre_basisLengthAxis0);  //also flattened array
 
-                pre_basis_Y.RefreshHost();
-                substitution_result.RefreshHost();
-                Create_pre_basis(substitution_result, pre_basis_Y, pre_basisLengthAxis0);  //create prebasis from result of substitution
+                //substitution_result.RefreshHost();
+                //int[] s2 = new int[pre_basisLengthAxis0];
+                //for (int k = 0; k < pre_basisLengthAxis0; k++)
+                //{
+                //    s2[k] = substitution_result[k];
+                //}
+
+                pre_basis_Y.RefreshDevice();
+                //substitution_result.RefreshDevice();
+                wrapper.Create_pre_basis(substitution_result, pre_basis_Y, pre_basisLengthAxis0);  //create prebasis from result of substitution
 
                 IntResidentArray mult_result = new IntResidentArray((pre_basisLengthAxis0-1)*equationLength);
 
-                pre_basis_main.RefreshHost();
-                mult_result.RefreshHost();
-                Multiply_pre_basis(pre_basis_main, pre_basis_Y, mult_result, equationLength, pre_basisLengthAxis0-1, pre_basisLengthAxis0);  //get new main prebasis
+                //pre_basis_main.RefreshHost();
+                mult_result.RefreshDevice();
+                //pre_basis_Y.RefreshHost();
+                //int[] kar = new int[pre_basisLengthAxis0 * 2];
+                //for (int k = 0; k < pre_basisLengthAxis0 * 2; k++)
+                //{
+                //    kar[k] = pre_basis_Y[k];
+                //}
+                wrapper.Multiply_pre_basis(pre_basis_main, pre_basis_Y, mult_result, equationLength, pre_basisLengthAxis0-1, pre_basisLengthAxis0);  //get new main prebasis
 
                 pre_basis_main = mult_result;
                 pre_basisLengthAxis0 -= 1;
 
+                pre_basis_main.RefreshHost();
                 IntResidentArray gcds = new IntResidentArray(pre_basisLengthAxis0);
                 Find_gcds(pre_basis_main, pre_basisLengthAxis0 , equationLength, gcds);
                 gcds.RefreshDevice();
@@ -208,6 +222,8 @@ namespace Hybrid
                 pre_basis_main.RefreshDevice();
                 wrapper.Simplify(pre_basis_main, gcds, pre_basisLengthAxis0, equationLength);  //simplify vectors of prebasis if possible
             }
+
+            pre_basis_main.RefreshHost();
             return pre_basis_main;
         }
 
