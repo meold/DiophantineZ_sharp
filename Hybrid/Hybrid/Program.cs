@@ -163,9 +163,7 @@ namespace Hybrid
             dynamic wrapper = runner.Wrap(new Program());
 
             IntResidentArray pre_basis_main = new IntResidentArray(input_arr[0].Length * (input_arr[0].Length - 1));
-            //int[] pre_basis_main = new int[(input_arr[0].Length - 1)*input_arr[0].Length];  //pre_basis is flattened array now
-
-
+            
             //int threadsperblock = 256;
             //int blockspergrid = (int)Math.Ceiling((double)(input_arr[0].Length - 1) / threadsperblock);
 
@@ -188,27 +186,12 @@ namespace Hybrid
 
                 IntResidentArray pre_basis_Y = new IntResidentArray((pre_basisLengthAxis0 - 1)*pre_basisLengthAxis0);  //also flattened array
 
-                //substitution_result.RefreshHost();
-                //int[] s2 = new int[pre_basisLengthAxis0];
-                //for (int k = 0; k < pre_basisLengthAxis0; k++)
-                //{
-                //    s2[k] = substitution_result[k];
-                //}
-
                 pre_basis_Y.RefreshDevice();
-                //substitution_result.RefreshDevice();
                 wrapper.Create_pre_basis(substitution_result, pre_basis_Y, pre_basisLengthAxis0);  //create prebasis from result of substitution
 
                 IntResidentArray mult_result = new IntResidentArray((pre_basisLengthAxis0-1)*equationLength);
 
-                //pre_basis_main.RefreshHost();
                 mult_result.RefreshDevice();
-                //pre_basis_Y.RefreshHost();
-                //int[] kar = new int[pre_basisLengthAxis0 * 2];
-                //for (int k = 0; k < pre_basisLengthAxis0 * 2; k++)
-                //{
-                //    kar[k] = pre_basis_Y[k];
-                //}
                 wrapper.Multiply_pre_basis(pre_basis_main, pre_basis_Y, mult_result, equationLength, pre_basisLengthAxis0-1, pre_basisLengthAxis0);  //get new main prebasis
 
                 pre_basis_main = mult_result;
@@ -229,18 +212,9 @@ namespace Hybrid
 
         static void Main(string[] args)
         {
+            string inputDirectory = @"C:\Users\dmitr\source\repos\DiophantineZ_sharp\Generator\Input\";
 
-            using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(new System.IO.FileStream("sharpZ.txt", FileMode.Append)))
-            {
-                file.WriteLine("just a test0");
-            }
-
-            
-
-
-
-            foreach (string filename in Directory.EnumerateFiles(@"C:\Users\dmitr\Documents\DiophantineZ\Input\")) //iterate through all files with inputs in directory
+            foreach (string filename in Directory.EnumerateFiles(inputDirectory)) //iterate through all files with inputs in directory
             {
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 string input_size = "";
