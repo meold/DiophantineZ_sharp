@@ -31,7 +31,7 @@ namespace Hybrid
         }
 
         [EntryPoint]
-        public static void Create_pre_basis(int[] equation, int[] pre_basis_main, int N)  //create prebasis for given equation, return list of vectors
+        public static void Create_pre_basis(IntResidentArray equation, IntResidentArray pre_basis_main, int N)  //create prebasis for given equation, return list of vectors
         {
             int i_not_zero = 0;  //placement of first coordinate which not equals zero
             for (int i = 0; i < N; i++)  //search for i_not_zero
@@ -46,12 +46,20 @@ namespace Hybrid
             {
                 if (i > i_not_zero) //skip
                 {
+                    for (int p = 0; p < N; p++)
+                    {
+                        pre_basis_main[(i-1) * N + p] = 0;
+                    }
                     pre_basis_main[(i-1)*N + i_not_zero] =
                         equation[i] * -1; //put inverted coefficient on place of first not zero
                     pre_basis_main[(i - 1) * N + i] = equation[i_not_zero]; //replace coefficient with first not zero
                 }
                 else if (i < i_not_zero)
                 {
+                    for (int p = 0; p < N; p++)
+                    {
+                        pre_basis_main[i * N + p] = 0;
+                    }
                     pre_basis_main[i*N + i_not_zero] =
                         equation[i] * -1; //put inverted coefficient on place of first not zero
                     pre_basis_main[i*N+i] = equation[i_not_zero]; //replace coefficient with first not zero
@@ -60,11 +68,12 @@ namespace Hybrid
         }
 
         [EntryPoint]
-        public static void Substitute(int[] equation, int[] pre_basis, int[] result, int equationLength, int pre_basisLengthAxis0)  //substitute vectors of prebasis to given equation
+        public static void Substitute(int[] equation, IntResidentArray pre_basis, IntResidentArray result, int equationLength, int pre_basisLengthAxis0)  //substitute vectors of prebasis to given equation
         {
             //for each prebasis vector
             Parallel.For(0, pre_basisLengthAxis0, (i) =>
             {
+                result[i] = 0;
                 for (int c = 0; c < equationLength; c++)
                 {
                     result[i] += pre_basis[i*equationLength + c] * equation[c];
@@ -73,10 +82,14 @@ namespace Hybrid
         }
 
         [EntryPoint]
-        public static void Multiply_pre_basis(int[] big_pre_basis, int[] small_pre_basis, int[] result, int big_pre_basisLengthAxis1, int small_pre_basisLengthAxis0, int small_pre_basisLengthAxis1)  //multiplies pre basis from equation gained from substitution and pre basis from initial equation(main prebasis)
+        public static void Multiply_pre_basis(IntResidentArray big_pre_basis, IntResidentArray small_pre_basis, IntResidentArray result, int big_pre_basisLengthAxis1, int small_pre_basisLengthAxis0, int small_pre_basisLengthAxis1)  //multiplies pre basis from equation gained from substitution and pre basis from initial equation(main prebasis)
         {
             Parallel.For(0, small_pre_basisLengthAxis0, (i) => //small_vector=small_pre_basis[i]
             {
+                for (int k = 0; k < big_pre_basisLengthAxis1; k++)
+                {
+                    result[i * big_pre_basisLengthAxis1 + k] = 0;
+                }
                 for (int i_small_vector = 0;
                     i_small_vector < small_pre_basisLengthAxis1;
                     i_small_vector++) //for each coefficient of vector from substituion prebasis
@@ -110,10 +123,9 @@ namespace Hybrid
                 return GCD(b, a % b);
         }
 
-        static int[] Find_gcds(int[] ar, int equationLength)
+        static void Find_gcds(IntResidentArray ar, int pre_basisLengthAxis0, int equationLength, IntResidentArray gcds)
         {
-            int[] gcds = new int[ar.GetLength(0)/equationLength];
-            for (int i = 0; i < ar.GetLength(0)/equationLength; i++)
+            for (int i = 0; i < pre_basisLengthAxis0; i++)
             {
                 int[] row = new int[equationLength];
                 for (int j = 0; j < equationLength; j++)
@@ -122,12 +134,10 @@ namespace Hybrid
                 }
                 gcds[i] = Reduce(GCD, row, 0);
             }
-
-            return gcds;
         }
 
         [EntryPoint]
-        static void Simplify(int[] ar, int[] gcds, int arLengthAxis0, int arLengthAxis1) //simplifying vectors of matrix
+        static void Simplify(IntResidentArray ar, IntResidentArray gcds, int arLengthAxis0, int arLengthAxis1) //simplifying vectors of matrix
         {
             Parallel.For(0, arLengthAxis0, (row) =>
             {
@@ -142,7 +152,7 @@ namespace Hybrid
             });
         }
 
-        public static int[] Solv(List<int[]> input_arr)
+        public static IntResidentArray Solv(List<int[]> input_arr)
         {
             cudaDeviceProp prop;
             cuda.GetDeviceProperties(out prop, 0);
@@ -152,39 +162,50 @@ namespace Hybrid
             // create a wrapper object to call GPU methods instead of C#
             dynamic wrapper = runner.Wrap(new Program());
 
-            //IntResidentArray pre_basis_main = new IntResidentArray(input_arr[0].Length * (input_arr[0].Length - 1));
-            int[] pre_basis_main = new int[(input_arr[0].Length - 1)*input_arr[0].Length];  //pre_basis is flattened array now
-            int[] a = new int[input_arr[0].Length - 1];
+            IntResidentArray pre_basis_main = new IntResidentArray(input_arr[0].Length * (input_arr[0].Length - 1));
+            //int[] pre_basis_main = new int[(input_arr[0].Length - 1)*input_arr[0].Length];  //pre_basis is flattened array now
 
 
             //int threadsperblock = 256;
             //int blockspergrid = (int)Math.Ceiling((double)(input_arr[0].Length - 1) / threadsperblock);
 
-            int N = input_arr[0].Length;
+            int pre_basisLengthAxis0 = input_arr[0].Length - 1;
             int equationLength = input_arr[0].Length;
-            wrapper.Create_pre_basis(input_arr[0], pre_basis_main, N);  //create prebasis for the first equation
+            IntResidentArray inputArray0 = new IntResidentArray(equationLength);
+            inputArray0.RefreshHost();
+            for (int j = 0; j < equationLength; j++)
+            { inputArray0[j] = input_arr[0][j]; }
+
+            inputArray0.RefreshDevice();
+            pre_basis_main.RefreshDevice();
+            wrapper.Create_pre_basis(inputArray0, pre_basis_main, equationLength);  //create prebasis for the first equation
             for (int Li = 1; Li < input_arr.Count; Li++)  //iterate through other equations
             {
-                int pre_basisLengthAxis0 = pre_basis_main.GetLength(0) / equationLength;  //pre_basis is flattened
-                int[] substitution_result = new int[pre_basisLengthAxis0];
-                
+                IntResidentArray substitution_result = new IntResidentArray(pre_basisLengthAxis0);
+
+                substitution_result.RefreshDevice();
                 wrapper.Substitute(input_arr[Li], pre_basis_main, substitution_result, equationLength, pre_basisLengthAxis0);  //substitute vectors of prebasis to equation Li
 
-                int[] pre_basis_Y = new int[(substitution_result.Length - 1)*substitution_result.Length];  //also flattened array
-                
-                Create_pre_basis(substitution_result, pre_basis_Y, substitution_result.Length);  //create prebasis from result of substitution
+                IntResidentArray pre_basis_Y = new IntResidentArray((pre_basisLengthAxis0 - 1)*pre_basisLengthAxis0);  //also flattened array
 
-                int[] mult_result = new int[(substitution_result.Length-1)*equationLength];
+                pre_basis_Y.RefreshHost();
+                substitution_result.RefreshHost();
+                Create_pre_basis(substitution_result, pre_basis_Y, pre_basisLengthAxis0);  //create prebasis from result of substitution
 
-                int pre_basis_YLengthAxis1 = substitution_result.Length;
-                int pre_basis_YLengthAxis0 = pre_basis_Y.GetLength(0)/pre_basis_YLengthAxis1;  //pre_basis_Y is a flattened array
-                Multiply_pre_basis(pre_basis_main, pre_basis_Y, mult_result, equationLength, pre_basis_YLengthAxis0, pre_basis_YLengthAxis1);  //get new main prebasis
+                IntResidentArray mult_result = new IntResidentArray((pre_basisLengthAxis0-1)*equationLength);
+
+                pre_basis_main.RefreshHost();
+                mult_result.RefreshHost();
+                Multiply_pre_basis(pre_basis_main, pre_basis_Y, mult_result, equationLength, pre_basisLengthAxis0-1, pre_basisLengthAxis0);  //get new main prebasis
 
                 pre_basis_main = mult_result;
+                pre_basisLengthAxis0 -= 1;
 
-                int[] gcds = Find_gcds(pre_basis_main, equationLength);
+                IntResidentArray gcds = new IntResidentArray(pre_basisLengthAxis0);
+                Find_gcds(pre_basis_main, pre_basisLengthAxis0 , equationLength, gcds);
+                gcds.RefreshDevice();
 
-                pre_basisLengthAxis0 = pre_basis_main.GetLength(0)/equationLength;
+                pre_basis_main.RefreshDevice();
                 wrapper.Simplify(pre_basis_main, gcds, pre_basisLengthAxis0, equationLength);  //simplify vectors of prebasis if possible
             }
             return pre_basis_main;
@@ -208,7 +229,7 @@ namespace Hybrid
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 string input_size = "";
                 List<int[]> red = Read_file(filename);
-                int[] solution;
+                IntResidentArray solution;
                 for (int i = 0; i < 10; i++)
                 {
                     red = Read_file(filename);
@@ -224,7 +245,7 @@ namespace Hybrid
                     new System.IO.StreamWriter(new System.IO.FileStream("CUDAsharpZ.csv", FileMode.Append)))
                 {
                     solution = Solv(red);
-                    for (int line = 0; line < solution.Length / red[0].Length; line++)
+                    for (int line = 0; line < solution.Count / red[0].Length; line++)
                     {
                         for (int c = 0; c < red[0].Length; c++)
                         {

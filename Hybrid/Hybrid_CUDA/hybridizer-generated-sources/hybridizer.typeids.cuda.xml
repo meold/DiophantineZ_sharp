@@ -5,23 +5,31 @@
     <TypeId>1000000</TypeId>
   </SerializedTypeId>
   <SerializedTypeId>
-    <Type>System.Action`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</Type>
+    <Type>Hybridizer.Runtime.CUDAImports.IntResidentArray</Type>
     <TypeId>1000001</TypeId>
   </SerializedTypeId>
   <SerializedTypeId>
-    <Type>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</Type>
+    <Type>Hybridizer.Runtime.CUDAImports.ResidentArrayStatus</Type>
     <TypeId>1000002</TypeId>
   </SerializedTypeId>
   <SerializedTypeId>
-    <Type>System.Object</Type>
+    <Type>System.Action`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</Type>
     <TypeId>1000003</TypeId>
   </SerializedTypeId>
   <SerializedTypeId>
-    <Type>System.Threading.Tasks.Parallel</Type>
+    <Type>System.Nullable`1[[System.Int64, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</Type>
     <TypeId>1000004</TypeId>
   </SerializedTypeId>
   <SerializedTypeId>
-    <Type>System.Threading.Tasks.ParallelLoopResult</Type>
+    <Type>System.Object</Type>
     <TypeId>1000005</TypeId>
+  </SerializedTypeId>
+  <SerializedTypeId>
+    <Type>System.Threading.Tasks.Parallel</Type>
+    <TypeId>1000006</TypeId>
+  </SerializedTypeId>
+  <SerializedTypeId>
+    <Type>System.Threading.Tasks.ParallelLoopResult</Type>
+    <TypeId>1000007</TypeId>
   </SerializedTypeId>
 </ArrayOfSerializedTypeId>
