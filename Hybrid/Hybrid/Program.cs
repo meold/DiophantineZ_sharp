@@ -213,6 +213,7 @@ namespace Hybrid
         static void Main(string[] args)
         {
             string inputDirectory = @"C:\Users\dmitr\source\repos\DiophantineZ_sharp\Generator\Input\";
+            string outputFile = "_Sharp_CUDA_beta.csv";
 
             foreach (string filename in Directory.EnumerateFiles(inputDirectory)) //iterate through all files with inputs in directory
             {
@@ -232,18 +233,18 @@ namespace Hybrid
                 Console.Out.WriteLine(input_size);
                 
                 using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(new System.IO.FileStream("CUDAsharpZ.csv", FileMode.Append)))
+                    new System.IO.StreamWriter(new System.IO.FileStream(outputFile, FileMode.Append)))
                 {
-                    solution = Solv(red);
-                    for (int line = 0; line < solution.Count / red[0].Length; line++)
-                    {
-                        for (int c = 0; c < red[0].Length; c++)
-                        {
-                            file.Write(solution[line * red[0].Length + c].ToString() + ", ");
-                        }
+                    //solution = Solv(red);
+                    //for (int line = 0; line < solution.Count / red[0].Length; line++)
+                    //{
+                    //    for (int c = 0; c < red[0].Length; c++)
+                    //    {
+                    //        file.Write(solution[line * red[0].Length + c].ToString() + ", ");
+                    //    }
 
-                        file.WriteLine();
-                    }
+                    //    file.WriteLine();
+                    //}
 
 
                     file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length).ToString(),

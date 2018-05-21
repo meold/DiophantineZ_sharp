@@ -21,7 +21,8 @@ namespace Generator
 
 
             int min_variables_multiplier = 1;
-            int max_variables_multiplier = 100;
+            int max_variables_multiplier = 40;
+            int variables_step = 1;
 
             int min_equations = 1;
             int max_equations = original.Length;
@@ -30,7 +31,7 @@ namespace Generator
             {
                 for (int variables_multiplier = min_variables_multiplier;
                     variables_multiplier <= max_variables_multiplier;
-                    variables_multiplier++)
+                    variables_multiplier+=variables_step)
                 {
                     string inputName = "input" + equations.ToString() + "x" +
                                        (original[0].Split().Length * variables_multiplier).ToString() + ".txt";

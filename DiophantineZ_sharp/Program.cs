@@ -153,8 +153,10 @@ namespace DiophantineZ_sharp
 
         static void Main(string[] args)
         {
+            string inputDirectory = @"C:\Users\dmitr\source\repos\DiophantineZ_sharp\Generator\Input\";
+            string outputFile = "_Sharp_beta.csv";
 
-            foreach (string filename in Directory.EnumerateFiles(@"C:\Users\dmitr\Documents\DiophantineZ\Input\")) //iterate through all files with inputs in directory
+            foreach (string filename in Directory.EnumerateFiles(inputDirectory)) //iterate through all files with inputs in directory
             {
                 System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
                 string input_size = "";
@@ -170,7 +172,7 @@ namespace DiophantineZ_sharp
 
                 Console.WriteLine(input_size);
                 using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter(new System.IO.FileStream("sharpZ.csv", FileMode.Append)))
+                    new System.IO.StreamWriter(new System.IO.FileStream(outputFile, FileMode.Append)))
                 {
                     file.WriteLine("{0},{1},{2}", red.Count.ToString(), (red[0].Length).ToString(),
                         (sw.ElapsedMilliseconds/10000.0).ToString("F4", CultureInfo.InvariantCulture));
@@ -187,7 +189,7 @@ namespace DiophantineZ_sharp
             //x.ForEach(i => write_arr(i));
             //Console.WriteLine();
             //Console.WriteLine((sw.ElapsedMilliseconds / 100.0).ToString());
-            Console.ReadKey();
+            //Console.ReadKey();
         }
     }
 }
